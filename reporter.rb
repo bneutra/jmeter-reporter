@@ -115,14 +115,15 @@ class CsvReporter
       batch = @intervals_data[interval]
       summary_intervals_report[interval] = get_batch_stats(batch, @interval_s)
     end
+    peak_data, runtime = get_peak_result_set(@intervals_data, @peak_thread_threshold, @interval_s)
     if @output_full_data
       # save raw data to disk
       open('intervals.marshal', 'w').puts(Marshal.dump(@intervals_data))
       open('peak.marshal', 'w').puts(Marshal.dump(peak_data))
+      puts "Output intervals.marshal and peak.marshal binary files"
       return
     end
 
-    peak_data, runtime = get_peak_result_set(@intervals_data, @peak_thread_threshold, @interval_s)
     summary_peak_report = get_batch_stats(peak_data, runtime)
     # print peak period summary to stdout
     samples = peak_data['ALL']['requests']

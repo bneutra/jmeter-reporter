@@ -77,7 +77,7 @@ end
 if __FILE__ == $0
   options = {
     :interval_seconds => 60,
-    :peak_thread_threshold => 0,
+    :thread_threshold => 0,
     :output_summary_data => false
   }
   OptionParser.new do |opts|
