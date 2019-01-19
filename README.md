@@ -27,7 +27,7 @@ ruby jmeter_reporter.rb example.jtl -i 10 -f
 
 Process the merged output of 2 intermediate binary files, from the previous output. note: I just give it the same file twice for expediency. Also, note: the astute observer will notice there's a discrepency in the sample count. I think this is a bug in how the code chooses interval boundaries. Need to look into that. It should be minimal in large sample sets.
 ```
-ruby merged_data_reporter.rb intervals.marshal intervals.marshal -t 20 -i 10
+ruby merged_data_reporter.rb intervals.marshal intervals.marshal -t 20
 [SUMMARY] runtime: 120s samples: 742 threads: 20
 +--------------+-----+---------------+------+--------+------+------+------+
 | label        | tps | error_percent | mean | median | 75th | 95th | 99th |
