@@ -5,7 +5,6 @@ require 'colorize'
 require_relative 'ascii_report'
 require_relative 'data_util'
 
-
 def load_raw_data_files(file_paths)
   hashes = []
   file_paths.each do |file_path|
@@ -17,8 +16,7 @@ end
 # given a list of output files from multiple
 # load generators, align them by epoch and
 # merge the results into one master result hash.
-def merge_raw_data_files(file_paths)
-  hashes = load_raw_data_files(file_paths)
+def merge_raw_data(hashes)
   all_epochs = []
   final_hash = {}
   hashes.each do |this_hash|
@@ -50,7 +48,8 @@ def merge_raw_data_files(file_paths)
 end
 
 def create_reports(options, file_paths)
-  intervals_data = merge_raw_data_files(file_paths)
+  hashes = load_raw_data_files(file_paths)
+  intervals_data = merge_raw_data(hashes)
   summary_intervals_report = {}
   intervals = intervals_data.keys.sort
   interval_s = options[:interval_seconds]
