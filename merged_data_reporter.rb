@@ -68,6 +68,14 @@ def create_reports(options, file_paths)
   samples = peak_data['ALL']['requests']
   table_header(runtime, samples, threads)
   table_summary(summary_peak_report)
+
+  if options[:output_summary_data]
+    # save summary data to disk (for use in reports)
+    open('intervals_summary.json', 'w').puts(summary_intervals_report.to_json)
+    open('peak_summary.json', 'w').puts(summary_peak_report.to_json)
+    puts "intervals_summary.json and peak_summary.json have been saved to disk."
+  end
+
   return intervals_data, peak_data
 
 end

@@ -22,12 +22,12 @@ $ ruby jmeter_reporter.rb example.jtl -t 10
 
 Process the same jmeter, but output a intermediate binary/marshal file. The output file represents the intervals of histogram data (i.e. each 60 second (default) window of time with a hash representing all the data collected in that time period)
 ```
-ruby jmeter_reporter.rb example.jtl -f
+$ ruby jmeter_reporter.rb example.jtl -f
 ```
 
 Process the merged output of 2 intermediate binary files, from the previous output. note: I just give it the same file twice for expediency. This script is essentially merging the data from two different jmeter output files,  aligning them by the time windows, then outputting the overall results (notice how we increase threshold of threads we want to report on to 20 threads, since this scenario has to jmeter workers that each peaked at 10 threads).
 ```
-ruby merged_data_reporter.rb intervals.marshal intervals.marshal -t 20
+$ ruby merged_data_reporter.rb intervals.marshal intervals.marshal -t 20
 [SUMMARY] runtime: 120s samples: 744 threads: 20
 +--------------+-----+---------------+------+--------+------+------+------+
 | label        | tps | error_percent | mean | median | 75th | 95th | 99th |
@@ -38,5 +38,10 @@ ruby merged_data_reporter.rb intervals.marshal intervals.marshal -t 20
 | user_info    | 0.5 | 100.0         |      |        |      |      |      |
 | ALL          | 6.2 | 7.796         | 63.0 | 54     | 95   | 131  | 244  |
 +--------------+-----+---------------+------+--------+------+------+------+
+```
 
+Output json files suitable for generating charts (e.g. flot, google charts):
+```
+$ ruby merged_data_reporter.rb intervals.marshal intervals.marshal -t 20 -s
+intervals_summary.json and peak_summary.json have been saved to disk.
 ```

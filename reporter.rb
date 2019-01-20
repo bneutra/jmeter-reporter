@@ -133,6 +133,7 @@ class CsvReporter
       # save summary data to disk (for use in reports)
       open('intervals_summary.json', 'w').puts(summary_intervals_report.to_json)
       open('peak_summary.json', 'w').puts(summary_peak_report.to_json)
+      puts "intervals_summary.json and peak_summary.json have been saved to disk."
     end
     return peak_data
   end
