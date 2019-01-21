@@ -72,7 +72,7 @@ class TC_MyTest < Test::Unit::TestCase
       1469135190=>
         {"ALL"=>
           {"errors"=>1,
-          "http_code_distribution"=>{"200"=>1, "500"=>1},
+          "http_code_distribution"=>{"200"=>2, "500"=>1},
           "latency_distribution"=>{71=>1, 118=>1},
           "latency_sum"=>188,
           "requests"=>3,
@@ -98,7 +98,7 @@ class TC_MyTest < Test::Unit::TestCase
       epoch = merged[1469135190]['ALL']
       expected_merged_epoch = 
         {"errors"=>2,
-        "http_code_distribution"=>{"200"=>2, "500"=>2},
+        "http_code_distribution"=>{"200"=>4, "500"=>2},
         "latency_distribution"=>{71=>2, 118=>2},
         "latency_sum"=>376,
         "requests"=>6,

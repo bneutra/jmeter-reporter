@@ -3,7 +3,7 @@ WIP. This was mostly a thought experiment around processing jmeter load test res
 
 I was running large scale distributed jmeter tests using https://github.com/flood-io/ruby-jmeter. Jmeter outputs csv files. So to merge the results of many jmeter workers in a single thread is slow and can push the limits of physical memory when you're talking about billions of requests. The basic strategy here is to reduce each report file into essentially a histogram of latencies. Then you just need to merge them and report based on those much smaller files.
 
-Examples:
+## Examples:
 
 Output a report from a single jmeter csv file. Report stats for the peak period (where threads were at or above 10):
 ```
@@ -45,3 +45,27 @@ Output json files suitable for generating charts (e.g. flot, google charts):
 $ ruby merged_data_reporter.rb intervals.marshal intervals.marshal -t 20 -s
 intervals_summary.json and peak_summary.json have been saved to disk.
 ```
+
+## More detail on the code
+
+reporter.rb does the work of parsing the .csv file. The initialization function below gives you a picture of the key data structure (which captures result metrics). This data is organized in a larger hash keyed by interval window (e.g. 60 seconds) and request type (e.g. a /login http request) . The key optimization is in storing latencies as a distribution/histogram. This is what allows this code to preserve the fidelity of the statistics while serializing all the work we did (counting all the data points of a huge file).
+```
+def get_batch_hash(start_ts, end_ts)
+return {
+    'errors' => 0,
+    'http_code_distribution' => Hash.new(0),
+    'latency_distribution' => Hash.new(0),
+    'latency_sum' => 0,
+    'requests' => 0,
+    'start_ts' => start_ts,
+    'end_ts' => end_ts,
+    'threads' => nil
+}
+end
+  ```
+
+The final report includes statistical information on the "peak" period of load. This is predicated on the idea that *most* load tests concern themselves with the ability of the system to sustain a certain amount of load for a certain amount of time. These tests also usually involve a ramp up and ramp down period. So, the scripts allow you to filter out the ramp up and ramp down if you provide the script n active "thread threshold". See: data_util:get_peak_period_by_threads. The peak period statistics are compiled by combining the data from all the peak intervals. See: data_util:get_peak_result_set. An ascii "peak" report or a .json output is provided.
+
+The report provides the same detailed statistical data for each interval in a .json output report file. This is suitable for charting the load tests results to help you visualize, for example, exactly when a system started performing poorly.
+
+The merging of multiple jmeter report files is just that: it's a process of combining the contents of the hashes, preserving the intervals across the report files. It assumes you report files actually come from the same time period! Once data is merged, the new data structure looks exactly like the data from a single test and reports can be generated using the same functions described above.
