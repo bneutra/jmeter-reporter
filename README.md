@@ -65,7 +65,7 @@ return {
 end
   ```
 
-The final report includes statistical information on the "peak" period of load. This is predicated on the idea that *most* load tests concern themselves with the ability of the system to sustain a certain amount of load for a certain amount of time. These tests also usually involve a ramp up and ramp down period. So, the scripts allow you to filter out the ramp up and ramp down if you provide the script n active "thread threshold". See: data_util:get_peak_period_by_threads. The peak period statistics are compiled by combining the data from all the peak intervals. See: data_util:get_peak_result_set. An ascii "peak" report or a .json output is provided.
+The final report includes statistical information on the "peak" period of load. This is predicated on the idea that *most* load tests concern themselves with the ability of the system to sustain a certain amount of load for a certain amount of time. These tests also usually involve a ramp up and ramp down period. So, the scripts allow you to filter out the ramp up and ramp down if you provide the script an active "thread threshold". See: data_util:get_peak_period_by_threads. The peak period statistics are compiled by combining the data from all the peak intervals. See: data_util:get_peak_result_set. An ascii "peak" report or a .json output is provided.
 
 The report provides the same detailed statistical data for each interval in a .json output report file. This is suitable for charting the load tests results to help you visualize, for example, exactly when a system started performing poorly.
 
